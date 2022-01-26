@@ -1,3 +1,4 @@
+import cmath
 from typing import Dict
 from functools import lru_cache
 from typing import Generator
@@ -45,6 +46,14 @@ def fib6(n:int) -> Generator[int, None, None]:
         last, next_num = next_num, last+next_num
         yield next_num
     
+def fib7(n:int) -> int:
+    lsa = (1 / cmath.sqrt(5)) * pow(((1 + cmath.sqrt(5)) / 2), n)
+    rsa = (1 / cmath.sqrt(5)) * pow(((1 - cmath.sqrt(5)) / 2), n)
+    fib = lsa-rsa
+    
+    #coerce to real so we can round the complex result
+    fn = round(fib.real)
+    return fn
 
 if __name__ == "__main__":
     # prints results
@@ -58,3 +67,4 @@ if __name__ == "__main__":
     print(fib4(50))
     print(fib5(50))
     print([i for i in fib6(10)])
+    print(fib7(100))
