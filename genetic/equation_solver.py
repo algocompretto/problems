@@ -42,7 +42,7 @@ class SimpleEquation(Chromosome):
 
 
 if __name__ == "__main__":
-    initial_population: List[SimpleEquation] = [SimpleEquation.random_instance() for _ in range(20)]
-    ga: GeneticAlgorithm[SimpleEquation] = GeneticAlgorithm(initial_population=initial_population, threshold=13.0, max_generations = 100, mutation_chance = 0.1, crossover_chance = 0.7)
+    initial_population: List[SimpleEquation] = [SimpleEquation.random_instance() for _ in range(100)]
+    ga: GeneticAlgorithm[SimpleEquation] = GeneticAlgorithm(initial_population=initial_population, threshold=15.0, max_generations = 100, mutation_chance = 0.01, crossover_chance = 0.7)
     result: SimpleEquation = ga.run()
     print(result)
