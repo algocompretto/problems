@@ -11,8 +11,7 @@ C = TypeVar('C', bound=Chromosome)
 class GeneticAlgorithm(Generic[C]):
     SelectionType = Enum("SelectionType", "ROULETTE TOURNAMENT")
 
-    def __init__(self, initial_population: List[C], threshold: float,
-            max_generations: int = 100, mutation_chance: float = 0.01, crossover_chance: float = 0.7, selection_type: SelectionType.TOURNAMENT) -> None:
+    def __init__(self, initial_population: List[C], threshold: float, max_generations: int = 100, mutation_chance: float = 0.01, crossover_chance: float = 0.7, selection_type: SelectionType = SelectionType.TOURNAMENT) -> None:
         self._population: List[C] = initial_population
         self._threshold: float = threshold
         self._max_generations: int = max_generations
@@ -26,7 +25,7 @@ class GeneticAlgorithm(Generic[C]):
 
     def _pick_tournament(self, num_participants: int) -> Tuple[C, C]:
         participants: List[C] = choices(self._population, k = num_participants)
-        return tuple(nlargest(2, partipants, key = self._fitness_key))
+        return tuple(nlargest(2, participants, key = self._fitness_key))
 
     def _reproduce_and_replace(self) -> None:
         new_population: List[C] = []
@@ -36,7 +35,7 @@ class GeneticAlgorithm(Generic[C]):
             else:
                 parents: Tuple[C, C] = self._pick_tournament(len(self._population) // 2)
 
-            if random(0 < self._crossover_chance):
+            if (random() < self._crossover_chance):
                 new_population.extend(parents[0].crossover(parents[1]))
             else:
                 new_population.extend(parents)
@@ -55,7 +54,7 @@ class GeneticAlgorithm(Generic[C]):
     def run(self) -> C:
         best: C = max(self._population, key=self._fitness_key)
         for generation in range(self._max_generations):
-            if best.fitness() >= self.threshold:
+            if best.fitness() >= self._threshold:
                 return best
         
             print(f"Generation {generation}, Best {best.fitness()}, Avg {mean(map(self._fitness_key, self._population))}")
